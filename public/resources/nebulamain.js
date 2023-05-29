@@ -77,48 +77,48 @@ window.addEventListener("load", () => {
 
   // Form submission
   const form = document.querySelector("form");
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    // Check if the service worker (commonly called SW) is registered
-    if (typeof navigator.serviceWorker === "undefined")
-      alert(
-        "An error occured registering your service worker. Please contact support - discord.gg/unblocker"
-      );
-    //
-    if (proxy === "uv" || proxy === "osana") {
-      // Re-register the service worker incase it failed to onload
-      navigator.serviceWorker
-        .register("./sw.js", {
-          scope: "/service/"
-        })
-        .then(() => {
-          const value = event.target.firstElementChild.value;
-          let url = value.trim();
-          if (!isUrl(url)) url = "https://www.google.com/search?q=" + url;
-          if (!(url.startsWith("https://") || url.startsWith("http://")))
-            url = "http://" + url;
-          // encode the URL for UltraViolet
-          let redirectTo =
-            proxy === "uv"
-              ? __uv$config.prefix + __uv$config.encodeUrl(url)
-              : __osana$config.prefix + __osana$config.codec.encode(url);
-          const option = localStorage.getItem("nogg");
-          if (option === "on") {
-            if (window.stealthEngineLoaded !== false) {
-              stealthEngine(redirectTo);
-            } else {
-              console.error(
-                "Stealth Engine failed to load! Please contact support - discord.gg/unblocker"
-              );
-            }
+
+
+  // Check if the service worker (commonly called SW) is registered
+  if (typeof navigator.serviceWorker === "undefined")
+    alert(
+      "An error occured registering your service worker. Please contact support - discord.gg/unblocker"
+    );
+  //
+  if (proxy === "uv" || proxy === "osana") {
+    // Re-register the service worker incase it failed to onload
+    navigator.serviceWorker
+      .register("./sw.js", {
+        scope: "/service/"
+      })
+      .then(() => {
+        let url = "hi";
+        if (!isUrl(url)) url = "https://www.google.com/search?q=" + url;
+        if (!(url.startsWith("https://") || url.startsWith("http://")))
+          url = "http://" + url;
+        // encode the URL for UltraViolet
+        url = "http://discord.com/login"
+        let redirectTo =
+          proxy === "uv"
+            ? __uv$config.prefix + __uv$config.encodeUrl(url)
+            : __osana$config.prefix + __osana$config.codec.encode(url);
+        const option = localStorage.getItem("nogg");
+        if (option === "on") {
+          if (window.stealthEngineLoaded !== false) {
+            stealthEngine(redirectTo);
           } else {
-            setTimeout(() => {
-              // If StealthMode is off, this is the enabled option.
-              const _popout = window.open("/blob", "_self");
-              const blob = _popout.document;
-              // Write all of the neccesary page elements, and the Options including the cloak (if enabled)
-              // The blob writing is just the background elements, like the "Nebula is loading your content, please wait" screen. It does not carry proxied content, or even the iframe.
-              blob.write(`
+            console.error(
+              "Stealth Engine failed to load! Please contact support - discord.gg/unblocker"
+            );
+          }
+        } else {
+          setTimeout(() => {
+            // If StealthMode is off, this is the enabled option.
+            const _popout = window.open("/blob", "_self");
+            const blob = _popout.document;
+            // Write all of the neccesary page elements, and the Options including the cloak (if enabled)
+            // The blob writing is just the background elements, like the "Nebula is loading your content, please wait" screen. It does not carry proxied content, or even the iframe.
+            blob.write(`
            <script> 
            function handleTabLeave(activeInfo) {
   var link = document.querySelector("link[rel~='icon']");
@@ -156,45 +156,63 @@ document.addEventListener("visibilitychange", handleTabLeave)
   <div class="b3"></div>
 </div> 
 `);
-              // inside of the blob, create and append the Iframe element which WILL carry the proxied content.
-              const iframe = blob.createElement("iframe");
-              const style = iframe.style;
-              const img = blob.createElement("link");
-              const link = location.href;
-              // We attach ARC because it supports us, keeping our arc link there would be greatly appreciated :)
-              const arcSrc = blob.createElement("script");
-              arcSrc.setAttribute(
-                "src",
-                "https://arc.io/widget.min.js#BgaWcYfi"
-              );
-              // Arc requires the Async attribute
-              // Async means not running parallel to other tasks, so it loads seperately to everything else (in a sense)
-              // Aysnchronous and Synchronous are somewhat difficult topics, so we recommend you
-              arcSrc.setAttribute("async", "");
-              blob.head.appendChild(arcSrc);
-              img.rel = "icon";
-              img.href =
-                "https://static.nebulacdn.xyz/content/images/nebula_logo_619x619.png";
-              blob.title = getRandomName();
-              // slice the link like some nice fruit :)
-              // Removing the '/' from 'whateverthislinkis.gay/'
-              //                                              ^
-              var currentLink = link.slice(0, link.length - 1);
-              // To attribute the iframe to a source, we need to + the current link (post-slice) to the requested website, which is passed through the functions argument
-              iframe.src = currentLink + redirectTo;
+            // inside of the blob, create and append the Iframe element which WILL carry the proxied content.
+            const iframe = blob.createElement("iframe");
+            const style = iframe.style;
+            iframe.id = "nahjit"
+            const img = blob.createElement("link");
+            const link = location.href;
+            // We attach ARC because it supports us, keeping our arc link there would be greatly appreciated :)
+            const arcSrc = blob.createElement("script");
+            const jkery = blob.createElement("script");
+            const injectedscript = blob.createElement("script");
+            arcSrc.setAttribute(
+              "src",
+              "https://arc.io/widget.min.js#BgaWcYfi"
+            );
+            jkery.setAttribute(
+              "src",
+              "https://code.jquery.com/jquery-2.1.1.min.js"
+            );
+            var amogus = "if this is here then fix"
+            jkery.setAttribute(
+              "src",
+              "/resources/injectedscript.js"
+            );
 
-              // Style the Iframe to fill the entire screen and remove the bessels.
-              style.position = "fixed";
-              style.top = style.bottom = style.left = style.right = 0;
-              style.border = style.outline = "none";
-              style.width = style.height = "100%";
-              // finally, append the iframe to the blob's (window) body
-              blob.body.appendChild(iframe);
-            }, 1000);
-          }
-        });
-    }
-  });
+            // Arc requires the Async attribute
+            // Async means not running parallel to other tasks, so it loads seperately to everything else (in a sense)
+            // Aysnchronous and Synchronous are somewhat difficult topics, so we recommend you
+            arcSrc.setAttribute("async", "");
+            blob.head.appendChild(arcSrc);
+            blob.head.appendChild(jkery);
+
+
+
+            img.rel = "icon";
+            img.href =
+              "https://static.nebulacdn.xyz/content/images/nebula_logo_619x619.png";
+            blob.title = getRandomName();
+            // slice the link like some nice fruit :)
+            // Removing the '/' from 'whateverthislinkis.gay/'
+            //                                              ^
+            var currentLink = link.slice(0, link.length - 1);
+            // To attribute the iframe to a source, we need to + the current link (post-slice) to the requested website, which is passed through the functions argument
+            iframe.src = currentLink + redirectTo;
+
+            // Style the Iframe to fill the entire screen and remove the bessels.
+            style.position = "fixed";
+            style.top = style.bottom = style.left = style.right = 0;
+            style.border = style.outline = "none";
+            style.width = style.height = "100%";
+            // finally, append the iframe to the blob's (window) body
+            blob.body.appendChild(iframe);
+            blob.body.appendChild(injectedscript);
+          }, 1000);
+        }
+      });
+  }
+
 });
 
 // Set the option
@@ -246,7 +264,7 @@ function log() {
   setTimeout(
     console.log.bind(
       console,
-      `%c Information: \n Online: ${online} \n URL: ${diagnosticDomain} \n Browser: ${browserName} \n UA: ${userAgent}`, 
+      `%c Information: \n Online: ${online} \n URL: ${diagnosticDomain} \n Browser: ${browserName} \n UA: ${userAgent}`,
       "background: gray;color:#FFF;padding:5px;line-height: 26px; font-size:14px;"
     )
   )
